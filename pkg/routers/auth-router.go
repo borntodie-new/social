@@ -8,4 +8,5 @@ import (
 func registerAuthRouter(mux *http.ServeMux) {
 	mux.HandleFunc("/login", controllers.Login)
 	mux.HandleFunc("/register", controllers.Register)
+	mux.HandleFunc("/logout", controllers.Logout)
 }
