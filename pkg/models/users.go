@@ -57,8 +57,10 @@ func GetUserById(userId string) (*User, *sql.DB, error) {
 	defer stmt.Close()
 	// 3. 执行SQL
 	row := stmt.QueryRow(userId)
-	user := row2User(row)
-
+	user, err := row2User(row)
+	if err != nil {
+		return nil, nil, err
+	}
 	// 4. 返回执行结果
 	return user, db, nil
 }
@@ -75,8 +77,10 @@ func GetUserByUsername(username string) (*User, *sql.DB, error) {
 	defer stmt.Close()
 	// 3. 执行SQL
 	row := stmt.QueryRow(username)
-	user := row2User(row)
-
+	user, err := row2User(row)
+	if err != nil {
+		return nil, nil, err
+	}
 	// 4. 返回执行结果
 	return user, db, nil
 }
@@ -110,11 +114,11 @@ func UpdateUser(user User) (*User, *sql.DB, error) {
 		tempSql = tempSql + " ,name=?" // update user set name=?
 		params = append(params, user.Name)
 	}
-	if user.City != ""{
+	if user.City != "" {
 		tempSql = tempSql + " ,city=?"
 		params = append(params, user.City)
 	}
-	if user.WebSite != ""{
+	if user.WebSite != "" {
 		tempSql = tempSql + " ,website=?"
 		params = append(params, user.WebSite)
 	}
@@ -122,7 +126,7 @@ func UpdateUser(user User) (*User, *sql.DB, error) {
 		tempSql = tempSql + " ,profilePic=?"
 		params = append(params, user.ProfilePic)
 	}
-	if user.CoverPic != ""{
+	if user.CoverPic != "" {
 		tempSql = tempSql + " ,coverPic=?"
 		params = append(params, user.CoverPic)
 	}
@@ -141,13 +145,12 @@ func UpdateUser(user User) (*User, *sql.DB, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	
+
 	id, _ := result.LastInsertId()
 	user.ID = int(id)
 	// 4. 返回执行结果
 	return &user, db, nil
 }
-
 
 func rows2Users(rows *sql.Rows) []User {
 	users := make([]User, 0)
@@ -159,8 +162,8 @@ func rows2Users(rows *sql.Rows) []User {
 	return users
 }
 
-func row2User(row *sql.Row) *User {
+func row2User(row *sql.Row) (*User, error) {
 	user := User{}
-	_ = row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.Name, &user.CoverPic, &user.ProfilePic, &user.City, &user.WebSite)
-	return &user
+	err := row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.Name, &user.CoverPic, &user.ProfilePic, &user.City, &user.WebSite)
+	return &user, err
 }
