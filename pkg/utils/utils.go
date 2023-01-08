@@ -41,3 +41,15 @@ func CheckToken(r *http.Request) (*models.User, bool) {
 	// 返回结果
 	return user, true
 }
+
+func JSON(w http.ResponseWriter, x interface{})  {
+	// 4. 返回结果
+	// 4.1 响应数据做序列化
+	res, _ := json.Marshal(x)
+	// 4.2 设置content-type
+	w.Header().Set("Content-Type", "application/json")
+	// 4.3 设置状态码
+	w.WriteHeader(http.StatusOK)
+	// 4.4 返回结果。
+	w.Write(res)
+}

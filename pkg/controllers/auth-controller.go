@@ -51,12 +51,12 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// 2. 获取参数
-	u := models.User{}
+	u := models.User{} // 前端传过来的需要注册的用户信息
 	utils.ParseBody(r, &u) // zs
 
 	// 3. 调用controller,判断用户名是否已经注册了
-	uu, _, _ := models.GetUserByUsername(u.Username) // zs
-	if uu.Username == u.Username {
+	uu, _, _ := models.GetUserByUsername(u.Username) // uu是后端根据前端传过来的用户名查询出来的信息
+	if uu != nil { // uu里面有东西，就表示查到了，咱们现在的首要目的就是希望uu是nil
 		http.Error(w, "User already exists!", http.StatusBadRequest)
 		return
 	}
