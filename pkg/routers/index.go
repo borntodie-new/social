@@ -9,4 +9,6 @@ var RegisterSocialRouter = func(mux *http.ServeMux) {
 	registerUserRouter(mux)
 	// 注册关系模块路由
 	registerRelationshipRouter(mux)
+	// 注册动态模块路由
+	registerPostRouter(mux)
 }
