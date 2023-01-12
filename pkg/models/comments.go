@@ -9,7 +9,7 @@ type Comment struct {
 	ID          int    `json:"id" form:"id"`
 	Description string `json:"description" form:"description"`
 	CreateAt    string `json:"createAt" form:"createAt"`
-	UserId      int    `json:"userId" form:"userId"`
+	UserId      int      `json:"userId" form:"userId"`
 	PostId      int    `json:"postId" form:"postId"`
 }
 type CommentResult struct {
