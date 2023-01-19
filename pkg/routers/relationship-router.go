@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/jason/social/pkg/controllers"
+	"github.com/jason/social/pkg/utils"
 	"net/http"
 )
 
@@ -14,5 +15,5 @@ import (
 // put 		/user/2 	修改ID为2的用户信息
 
 func registerRelationshipRouter(mux *http.ServeMux)  {
-	mux.HandleFunc("/relationships", controllers.DispatchRelationship)
+	mux.HandleFunc("/relationships", utils.CORS(controllers.DispatchRelationship))
 }

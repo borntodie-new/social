@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/jason/social/pkg/controllers"
+	"github.com/jason/social/pkg/utils"
 	"net/http"
 )
 
@@ -12,6 +13,6 @@ import (
 */
 
 func registerPostRouter(mux *http.ServeMux)  {
-	mux.HandleFunc("/posts", controllers.DispatchPost)
-	mux.HandleFunc("/posts/", controllers.DelPost)
+	mux.HandleFunc("/posts", utils.CORS(controllers.DispatchPost))
+	mux.HandleFunc("/posts/", utils.CORS(controllers.DelPost))
 }

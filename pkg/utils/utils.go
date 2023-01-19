@@ -53,3 +53,19 @@ func JSON(w http.ResponseWriter, x interface{})  {
 	// 4.4 返回结果。
 	w.Write(res)
 }
+
+// 跨域处理
+func CORS(f func(w http.ResponseWriter, r *http.Request)) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("access-control-allow-origin", "*")
+		w.Header().Set("access-control-allow-headers", "content-type,accesstoken,x-xsrf-token,authorization,token")
+		w.Header().Set("access-control-allow-credentials", "true")
+		w.Header().Set("access-control-allow-methods", "post,get,delete,put,options")
+		w.Header().Set("access-type", "application/json;charset=utf8-8")
+		if r.Method == "OPTIONS"{
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+		f(w, r)
+	}
+}
